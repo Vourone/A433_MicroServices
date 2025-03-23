@@ -7,7 +7,7 @@ WORKDIR /app
 # Menyalin seluruh source code ke working directory di container.
 COPY . .
 
-# Menentukan agar aplikasi berjalan dalam production mode dan menggunakan container bernama item-dbsebagai database host.
+# Menentukan agar aplikasi berjalan dalam production mode dan menggunakan container bernama item-db sebagai database host.
 ENV NODE_ENV=production
 ENV DB_HOST=item-db
 
