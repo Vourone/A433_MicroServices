@@ -5,7 +5,7 @@ version: '2.0.0'
 services:
   # Service untuk item-app
   item-app:
-    image: ghcr.io/Vourone/item-app:v1  # Menggunakan image item-app.
+    image: ghcr.io/vourone/item-app:v1  # Menggunakan image item-app.
     ports:
       - "80:8080"  # Melakukan port mapping agar dapat diakses dari port 80 di host.
     depends_on:
@@ -16,7 +16,7 @@ services:
 
   # Service untuk item-db
   item-db:
-    image: mongo:3.0.0  # Menggunakan image mongo:3
+    image: mongo:3  # Menggunakan image mongo:3
     volumes:
       - app-db:/data/db  # Memakai volume bernama app-db dengan target /data/db di container.
     restart: always  # Menerapkan restart policy agar container selalu restart ketika terhenti.
