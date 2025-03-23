@@ -1,5 +1,5 @@
 # Menggunakan base image Node.js versi 14.
-FROM node:14-bullseye
+FROM node:14
 
 # Menentukan bahwa working directory untuk container adalah /app.
 WORKDIR /app
