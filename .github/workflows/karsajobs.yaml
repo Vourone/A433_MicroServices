@@ -37,7 +37,7 @@ jobs:
      run: docker buildx build --platform linux/amd64 --provenance=false --sbom=false -t ghcr.io/vourone/karsajobs:latest . # Membuat image Docker
 
    - name: Docker login # Melakukan login ke GitHub Container Registry
-     run: echo $GH_PAT | docker login ghcr.io -u Vourone --password-stdin # Menggunakan token untuk autentikasi
+     run: docker login --username Vourone --password ${{ secrets.GH_PAT }} ghcr.io # Menggunakan token untuk autentikasi
 
    - name: Docker push # Mengunggah image Docker
      run: docker push ghcr.io/vourone/karsajobs:latest # Mendorong image Docker terbaru ke GitHub Container Registry
