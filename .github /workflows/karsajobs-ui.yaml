@@ -7,11 +7,11 @@ on:
 jobs:
  lint-dockerfile: # Melakukan linting pada Dockerfile
   runs-on: ubuntu-latest # Dijalankan pada Ubuntu terbaru
-   steps:
-    - uses: actions/checkout@v4.2.2 # CheckOut kode dari repository
-    - uses: hadolint/hadolint-action@v3.1.0 # Menjalankan Hadolint untuk memeriksa kesalahan pada Dockerfile
-      with:
-       dockerfile: ./Dockerfile # Lokasi Dockerfile
+  steps:
+   - uses: actions/checkout@v4.2.2 # CheckOut kode dari repository
+   - uses: hadolint/hadolint-action@v3.1.0 # Menjalankan Hadolint untuk memeriksa kesalahan pada Dockerfile
+     with:
+      dockerfile: ./Dockerfile # Lokasi Dockerfile
 
  build-app-karsajobs-ui:
   needs: lint-dockerfile # Menunggu job lint-dockerfile selesai
