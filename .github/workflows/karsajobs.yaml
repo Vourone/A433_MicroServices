@@ -1,0 +1,43 @@
+name: "karsajobs" # Nama WorkFlow
+
+on:
+ push:
+  branches: ["karsajobs"] # Pemicu: Hanya branch "karsajobs"
+
+jobs:
+ lint-dockerfile: # Melakukan linting pada Dockerfile
+  runs-on: ubuntu-latest # Dijalankan pada Ubuntu terbaru
+  steps:
+   - uses: actions/checkout@v4.2.2 # CheckOut kode dari repository
+   - uses: hadolint/hadolint-action@v3.1.0 # Menjalankan Hadolint untuk memeriksa kesalahan pada Dockerfile
+     with:
+      dockerfile: ./Dockerfile # Lokasi Dockerfile
+
+ test-app:
+  needs: lint-dockerfile # Menunggu job lint-dockerfile selesai 
+  runs-on: ubuntu-latest # Dijalankan pada Ubuntu terbaru
+  steps:
+   - uses: actions/checkout@v4.2.2 # CheckOut kode dari repository
+
+   - name: Set up Go
+     uses: actions/setup-go@v5.4.0 # Menggunakan aksi setup-go untuk menginstal Go
+     with:
+      go-version: "1.24.2" # Versi Go
+
+   - name: Test app
+     run: go test -v -short --count=1 $(go list ./...) # Menguji aplikasi dengan mode verbose, tanpa cache, dan hanya test singkat
+
+ build-app-karsajobs:
+  needs: [lint-dockerfile, test-app] # Menunggu job lint-dockerfile dan test-app selesai 
+  runs-on: ubuntu-latest # Dijalankan pada Ubuntu terbaru
+  steps:
+   - uses: actions/checkout@v4.2.2 # CheckOut kode dari repository
+
+   - name: Docker build # Membangun image Docker
+     run: docker buildx build --platform linux/amd64 --provenance=false --sbom=false -t ghcr.io/vourone/karsajobs:latest . # Membuat image Docker
+
+   - name: Docker login # Melakukan login ke GitHub Container Registry
+     run: echo $GH_PAT | docker login ghcr.io -u Vourone --password-stdin # Menggunakan token untuk autentikasi
+
+   - name: Docker push # Mengunggah image Docker
+     run: docker push ghcr.io/vourone/karsajobs:latest # Mendorong image Docker terbaru ke GitHub Container Registry
